@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class App {
+public class DateTimeLocalizationApp {
     public static void main(String[] args) throws Exception {
         // current time 
         printSeparator("current time");
