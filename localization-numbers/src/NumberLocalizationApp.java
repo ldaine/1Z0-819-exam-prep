@@ -2,7 +2,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class App {
+public class NumberLocalizationApp {
     public static void main(String[] args) throws Exception {
         double num = 26326.23423476d;
         NumberFormat nf = NumberFormat.getInstance(new Locale("en", "US"));
