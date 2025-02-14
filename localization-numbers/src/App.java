@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -9,5 +10,12 @@ public class App {
         nf.setMaximumFractionDigits(2);
         String value = nf.format(num);
         System.out.println("Formatted number: " + value);
+
+        // decimal format
+
+        DecimalFormat df = new DecimalFormat("#0.00 Money");
+        String valueDf = df.format(num);
+        System.out.println("Custom Formatted number: " + valueDf);
+
     }
 }
