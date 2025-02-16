@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('Unique name for the Azure Database for PostgreSQL.')
-param serverName string = 'psql-learn-${resourceGroup().location}-${uniqueString(resourceGroup().id)}'
+param serverName string = 'ld-java-1z0819-psql-${resourceGroup().location}-${uniqueString(resourceGroup().id)}'
 
 @description('The version of PostgreSQL to use.')
 param postgresVersion string = '16'
@@ -15,9 +15,6 @@ param adminLogin string = 'pgAdmin'
 @minLength(8)
 @secure()
 param adminLoginPassword string
-
-@description('Restore the service instead of creating a new instance. This is useful if you previously soft-delted the service and want to restore it. If you are restoring a service, set this to true. Otherwise, leave this as false.')
-param restore bool = false
 
 @description('Creates a PostgreSQL Flexible Server.')
 resource postgreSQLFlexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2023-03-01-preview' = {
@@ -62,9 +59,9 @@ resource allowAll 'Microsoft.DBforPostgreSQL/flexibleServers/firewallRules@2023-
   }
 }
 
-@description('Creates the "users" database in the PostgreSQL Flexible Server.')
-resource rentalsDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-01-preview' = {
-  name: 'users'
+@description('Creates the "1z0819jdbc" database in the PostgreSQL Flexible Server.')
+resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-01-preview' = {
+  name: '1z0819jdbc'
   parent: postgreSQLFlexibleServer
   properties: {
     charset: 'UTF8'
@@ -74,4 +71,4 @@ resource rentalsDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases@20
 
 output serverFqdn string = postgreSQLFlexibleServer.properties.fullyQualifiedDomainName
 output serverName string = postgreSQLFlexibleServer.name
-output databaseName string = rentalsDatabase.name
+output databaseName string = database.name
