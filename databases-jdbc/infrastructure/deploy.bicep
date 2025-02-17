@@ -59,9 +59,9 @@ resource allowAll 'Microsoft.DBforPostgreSQL/flexibleServers/firewallRules@2023-
   }
 }
 
-@description('Creates the "1z0819jdbc" database in the PostgreSQL Flexible Server.')
-resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-01-preview' = {
-  name: '1z0819jdbc'
+@description('Creates the "jdbctestdb" database in the PostgreSQL Flexible Server.')
+resource jdbcTestDb 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-01-preview' = {
+  name: 'jdbctestdb'
   parent: postgreSQLFlexibleServer
   properties: {
     charset: 'UTF8'
@@ -71,4 +71,4 @@ resource database 'Microsoft.DBforPostgreSQL/flexibleServers/databases@2023-03-0
 
 output serverFqdn string = postgreSQLFlexibleServer.properties.fullyQualifiedDomainName
 output serverName string = postgreSQLFlexibleServer.name
-output databaseName string = database.name
+output databaseName string = jdbcTestDb.name

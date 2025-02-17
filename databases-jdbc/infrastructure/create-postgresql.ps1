@@ -13,6 +13,8 @@ $TEMPLATE_LOCATION = ".\deploy.bicep"
 
 # set your default subscription
 # get your subscriptions 
+# is an experimental feature, tht is why: 
+az config set extension.use_dynamic_install=yes_without_prompt
 $SUBSCRIPTIONS = az account subscription list
 $SUBSCRIPTIONS_CONVERTED = ConvertFrom-JSON -InputObject "$SUBSCRIPTIONS"
 # if you have only one subsription
@@ -22,6 +24,10 @@ az account set --subscription $YOUR_SUBSCRIPTION_ID
 
 # create resource group 
 az group create --name $RESOURCEGROUP --location $LOCATION
+
+# if you are on azure portal cli: 
+git clone https://github.com/ldaine/1Z0-819-exam-prep.git 
+cd ./1Z0-819-exam-prep/databases-jdbc/infrastructure/
 
 # create all needed resources
 #$CREATED_RESOURCES = az postgres flexible-server create --subscription $YOUR_SUBSCRIPTION_ID --resource-group $RESOURCEGROUP --name $PG_SERVER_NAME --location $LOCATION --version $PG_SERVER_VERSION --zone 1 --password-auth enabled --admin-user $PG_ADMIN_USERNAME --admin-password $PG_ADMIN_PASSWORD --tier "burstable" --sku-name "standard_b1ms" --storage-type "premium_lrs" --storage-size "32" --performance-tier "p4"
