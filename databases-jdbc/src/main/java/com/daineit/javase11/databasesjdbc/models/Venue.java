@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Act {
+public class Venue {
     public Integer id;
     private String name;
-    private String recordLabel;
+    private Integer capacity;
 }

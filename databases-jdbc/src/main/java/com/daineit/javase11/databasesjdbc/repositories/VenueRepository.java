@@ -7,24 +7,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.daineit.javase11.databasesjdbc.models.Act;
+import com.daineit.javase11.databasesjdbc.models.Venue;
 
-public class ActRepository extends Repository<Act> {
+public class VenueRepository extends Repository<Venue> {
 
-    public ActRepository(Connection conn) {
-        super(conn, "acts");
+    public VenueRepository(Connection conn) {
+        super(conn, "venues");
     }
 
-    public List<Act> getAll() throws SQLException {
-        List<Act> result = new ArrayList<>();
-        String sql = "SELECT id, name, recordLabel FROM " + this.table;
+    public List<Venue> getAll() throws SQLException {
+        List<Venue> result = new ArrayList<>();
+        String sql = "SELECT id, name, capacity FROM " + super.table;
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Integer id = rs.getInt("id");
                 String name = rs.getString("name");
-                String recordlabel = rs.getString("recordLabel");
-                result.add(new Act(id, name, recordlabel));
+                Integer capacity = rs.getInt("capacity");
+                result.add(new Venue(id, name, capacity));
             }
         }
 
@@ -32,8 +32,8 @@ public class ActRepository extends Repository<Act> {
     }
 
     @Override
-    public void add(Act item) throws SQLException {
-        String sql = String.format("INSERT INTO %s (name, recordLabel) values (%s,%s) ", super.table, item.getName(), item.getRecordLabel());
+    public void add(Venue item) throws SQLException {
+        String sql = String.format("INSERT INTO %s (name, capacity) values (%s,%d) ", super.table, item.getName(), item.getCapacity());
         try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
             int numberOfUpdatedRows = statement.executeUpdate();
             if(numberOfUpdatedRows > 0){
