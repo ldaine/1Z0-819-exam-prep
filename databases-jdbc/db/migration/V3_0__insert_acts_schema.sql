@@ -1,9 +1,3 @@
-CREATE VIEW acts_with_record_label AS
-    SELECT acts.name, acts.recordlabel
-    FROM acts
-    WHERE acts.recordlabel IS NOT NULL
-    ORDER BY acts.name;
-
 INSERT INTO acts (id, name, recordLabel)
 VALUES (1, 'Foo Feathers', 'Copitol');
 INSERT INTO acts (id, name, recordLabel)

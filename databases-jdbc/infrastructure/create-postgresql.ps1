@@ -56,7 +56,7 @@ cd 'C:\Program Files\PostgreSQL\17\bin'
 ./psql.exe --host=$PG_SERVER_HOST  --port=5432 --username=$PG_ADMIN_USERNAME --dbname=$DB_NAME --set=sslmode=require
 
 #-----------------------------------------------------------------------
-# Populate the database with sample data
+# Populate the database with sample data (TEST purposes only)
 #-----------------------------------------------------------------------
 
 # create listings table:

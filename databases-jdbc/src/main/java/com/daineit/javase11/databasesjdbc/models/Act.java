@@ -5,9 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class User {
+public class Act {
     private Integer id;
-    private String firstName;
-    private String lastName;
-    private String gender;
+    private String name;
+    private String recordLabel;
 }

@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
-import com.daineit.javase11.databasesjdbc.models.User;
-import com.daineit.javase11.databasesjdbc.repositories.UserRepository;
+import com.daineit.javase11.databasesjdbc.models.Act;
+import com.daineit.javase11.databasesjdbc.repositories.ActRepository;
 
 public class DatabasesWithJDBCApp {
     static String DB_NAME = "jdbctestdb";
@@ -23,10 +23,10 @@ public class DatabasesWithJDBCApp {
         props.put("sslmode", "require");
         try(Connection conn = DriverManager.getConnection(URL, props)){
             System.out.println(conn);
-            UserRepository repo = new UserRepository(conn);
-            List<User> users = repo.getAll();
-            for(User user: users){
-                System.out.printf("%d - %s %s (%s)%n", user.getId(), user.getFirstName(), user.getLastName(), user.getGender());
+            ActRepository repo = new ActRepository(conn);
+            List<Act> result = repo.getAll();
+            for(Act act: result){
+                System.out.printf("%d - %s - %s%n", act.getId(), act.getName(), act.getRecordLabel());
             }
         }
     }
