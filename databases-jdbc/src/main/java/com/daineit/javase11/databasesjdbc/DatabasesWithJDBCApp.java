@@ -10,18 +10,16 @@ import com.daineit.javase11.databasesjdbc.models.Act;
 import com.daineit.javase11.databasesjdbc.repositories.ActRepository;
 
 public class DatabasesWithJDBCApp {
-    static String DB_NAME = "jdbctestdb";
-    static String SERVER_HOST = "<server-host>/";
-    static String URL = "jdbc:postgresql://" + DatabasesWithJDBCApp.SERVER_HOST  + DB_NAME;
-    static String USER_NAME = "pgAdmin";
-    static String PSW = "<password>";
+    static final DBConfiguration dbConfig = new DBConfiguration();
     public static void main(String[] args) throws SQLException {
+
+        final String url = "jdbc:postgresql://" + dbConfig.getUrl()  + "/" + dbConfig.getName();
         Properties props = new Properties();
-        props.put("user", USER_NAME);
-        props.put("password", PSW);
+        props.put("user", dbConfig.getUser());
+        props.put("password", dbConfig.getPassword());
         props.put("ssl", true);
         props.put("sslmode", "require");
-        try(Connection conn = DriverManager.getConnection(URL, props)){
+        try(Connection conn = DriverManager.getConnection(url, props)){
             System.out.println(conn);
             ActRepository repo = new ActRepository(conn);
             List<Act> result = repo.getAll();

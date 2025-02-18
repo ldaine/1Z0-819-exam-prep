@@ -9,8 +9,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
-    <lombok.version>1.18.12</lombok.version>
-    <postgresql.version>42.7.4</postgresql.version>
+    <lombok.version>1.18.24</lombok.version>
+    <postgresql.version>42.5.5</postgresql.version>
     <flyway-maven-plugin.version>10.7.1</flyway-maven-plugin.version>
     <flyway-database-postgresql.version>10.20.1</flyway-database-postgresql.version>
   </properties>
