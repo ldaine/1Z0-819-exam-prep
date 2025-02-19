@@ -4,31 +4,47 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class DBConfiguration {
-    private final String propertiesFilePath = "database.conf";
-    private Properties properties;
+public final class DBConfiguration {
+    private final String FILE_PATH = "database.conf";
+    private static DBConfiguration INSTANCE;
 
-    public DBConfiguration() {
-        properties = new Properties();
-        try (InputStream input = DBConfiguration.class.getClassLoader().getResourceAsStream(propertiesFilePath)) {
-            properties.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    final String host;
+    final String user;
+    final String password;
+    final String dbName;
+
+    private DBConfiguration() throws IOException {
+        Properties dbConfigProperties = new Properties();
+        try (InputStream input = DBConfiguration.class.getClassLoader().getResourceAsStream(FILE_PATH)) {
+            dbConfigProperties.load(input);
+            this.host = dbConfigProperties.getProperty("db.host");
+            this.user = dbConfigProperties.getProperty("db.user");
+            this.password = dbConfigProperties.getProperty("db.password");
+            this.dbName = dbConfigProperties.getProperty("db.name");
         }
     }
+
+    public static DBConfiguration getInstance() {
+        if (INSTANCE == null) {
+            try {
+                INSTANCE = new DBConfiguration();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return INSTANCE;
+    }
+
     public String getUrl() {
-        return properties.getProperty("db.host");
+        return "jdbc:postgresql://" + this.host + "/" + this.dbName;
     }
 
-    public String getUser() {
-        return properties.getProperty("db.user");
-    }
-
-    public String getPassword() {
-        return properties.getProperty("db.password");
-    }
-
-    public String getName() {
-        return properties.getProperty("db.name");
+    public Properties getProperties() {
+        Properties props = new Properties();
+        props.put("user", this.user);
+        props.put("password", this.password);
+        props.put("ssl", true);
+        props.put("sslmode", "require");
+        return props;
     }
 }

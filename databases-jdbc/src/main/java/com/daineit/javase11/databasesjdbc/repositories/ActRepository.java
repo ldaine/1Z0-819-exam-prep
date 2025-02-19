@@ -11,14 +11,14 @@ import com.daineit.javase11.databasesjdbc.models.Act;
 
 public class ActRepository extends Repository<Act> {
 
-    public ActRepository(Connection conn) {
-        super(conn, "acts");
+    public ActRepository() {
+        super("acts");
     }
 
     public List<Act> getAll() throws SQLException {
         List<Act> result = new ArrayList<>();
         String sql = "SELECT id, name, recordLabel FROM " + this.table;
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+        try (Connection conn = super.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Integer id = rs.getInt("id");
@@ -33,14 +33,16 @@ public class ActRepository extends Repository<Act> {
 
     @Override
     public void add(Act item) throws SQLException {
-        String sql = String.format("INSERT INTO %s (name, recordLabel) values (%s,%s) ", super.table, item.getName(), item.getRecordLabel());
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            int numberOfUpdatedRows = statement.executeUpdate();
-            if(numberOfUpdatedRows > 0){
-                return;
-            } else {
-                throw new SQLException("Could not add item");
-            }
+        String sql = String.format("INSERT INTO %s (name, recordLabel) values ('%s','%s') ", super.table, item.getName(), item.getRecordLabel());
+        super.simpleInsertWithExecuteUpdate(sql);
+    }
+
+    @Override
+    public void update(Act item) throws SQLException {
+        if(item.getId() == null){
+            throw new IllegalArgumentException("id must be provided");
         }
+        String sql = String.format("UPDATE %s SET name = %s, recordLabel = %d WHERE id = %d ", super.table, item.getName(), item.getRecordLabel(), item.getId());
+        super.simpleInsertWithExecuteUpdate(sql);
     }
 }

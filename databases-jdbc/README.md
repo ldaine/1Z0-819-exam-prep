@@ -16,8 +16,7 @@ For DB migrations we are using Flyway.
 
 To run the migration use: 
 
-Navigate to `src/main/resources`
-> mvn clean flyway:migrate `-Dflyway.configFiles=flyway.conf
+> mvn clean flyway:migrate `-Dflyway.configFiles=./src/main/resources/flyway.conf
 
 Make sure the `flyway.conf` exists and is up to date. 
 

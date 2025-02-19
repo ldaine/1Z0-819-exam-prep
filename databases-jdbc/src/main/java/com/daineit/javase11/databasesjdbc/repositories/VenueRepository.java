@@ -11,14 +11,14 @@ import com.daineit.javase11.databasesjdbc.models.Venue;
 
 public class VenueRepository extends Repository<Venue> {
 
-    public VenueRepository(Connection conn) {
-        super(conn, "venues");
+    public VenueRepository() {
+        super("venues");
     }
 
     public List<Venue> getAll() throws SQLException {
         List<Venue> result = new ArrayList<>();
         String sql = "SELECT id, name, capacity FROM " + super.table;
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
+        try (Connection conn = super.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 Integer id = rs.getInt("id");
@@ -34,13 +34,15 @@ public class VenueRepository extends Repository<Venue> {
     @Override
     public void add(Venue item) throws SQLException {
         String sql = String.format("INSERT INTO %s (name, capacity) values (%s,%d) ", super.table, item.getName(), item.getCapacity());
-        try (PreparedStatement statement = this.connection.prepareStatement(sql)) {
-            int numberOfUpdatedRows = statement.executeUpdate();
-            if(numberOfUpdatedRows > 0){
-                return;
-            } else {
-                throw new SQLException("Could not add item");
-            }
+        super.simpleInsertWithExecuteUpdate(sql);
+    }
+
+    @Override
+    public void update(Venue item) throws SQLException {
+        if(item.getId() == null){
+            throw new IllegalArgumentException("id must be provided");
         }
+        String sql = String.format("UPDATE %s SET name = %s, capacity = %d WHERE id = %d ", super.table, item.getName(), item.getCapacity(), item.getId());
+        super.simpleInsertWithExecuteUpdate(sql);
     }
 }

@@ -1,10 +1,14 @@
 package com.daineit.javase11.databasesjdbc;
 
 public enum InputCommands {
-    EXIT(1, "Exit the application"),
-    HELP(2, "Help"),
-    ALL(3, "Get all items"),
-    ADD(4, "Stop the application");
+    EXIT(0, "Exit the application"),
+    HELP(1, "Help"),
+    ALL_ACTS(2, "Get all acts"),
+    ADD_ACT(3, "Add act"),
+    ALL_VENUES(4, "Get all venues"),
+    ADD_VENUE(5, "Add venue"),
+    DELETE_ACT(6, "Delete act"),
+    DELETE_VENUE(7, "Delete venue");
 
     private int value;
     private String description;

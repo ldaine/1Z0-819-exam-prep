@@ -12,3 +12,5 @@ INSERT INTO acts (id, name)
 VALUES (6, 'Led Balloon');
 INSERT INTO acts (id, name)
 VALUES (7, 'Sheryl Rook');
+
+SELECT setval('my_table_id_seq', 101);
