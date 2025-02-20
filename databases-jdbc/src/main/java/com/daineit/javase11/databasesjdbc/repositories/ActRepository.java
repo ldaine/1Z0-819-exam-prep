@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,11 @@ public class ActRepository extends Repository<Act> {
         String sql = String.format("INSERT INTO %s (name, recordLabel) values (?,?) ", super.table);
         try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, item.getName());
-            statement.setString(2, item.getRecordLabel());
+            if(item.getRecordLabel() != null){
+                statement.setString(2, item.getRecordLabel());
+            } else {
+                statement.setNull(2, Types.CHAR);
+            }
             int numberOfUpdatedRows = statement.executeUpdate();
             if (numberOfUpdatedRows > 0) {
                 System.out.println("Database updated");
@@ -55,7 +60,11 @@ public class ActRepository extends Repository<Act> {
         String sql = String.format("UPDATE %s SET name = ?, recordLabel = ? WHERE id = ? ", super.table);
         try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, item.getName());
-            statement.setString(2, item.getRecordLabel());
+            if(item.getRecordLabel() != null){
+                statement.setString(2, item.getRecordLabel());
+            } else {
+                statement.setNull(2, Types.CHAR);
+            }
             statement.setInt(3, item.getId());
 
             int numberOfUpdatedRows = statement.executeUpdate();
