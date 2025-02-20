@@ -33,8 +33,18 @@ public class ActRepository extends Repository<Act> {
 
     @Override
     public void add(Act item) throws SQLException {
-        String sql = String.format("INSERT INTO %s (name, recordLabel) values ('%s','%s') ", super.table, item.getName(), item.getRecordLabel());
-        super.simpleInsertWithExecuteUpdate(sql);
+        String sql = String.format("INSERT INTO %s (name, recordLabel) values (?,?) ", super.table);
+        try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, item.getName());
+            statement.setString(2, item.getRecordLabel());
+            int numberOfUpdatedRows = statement.executeUpdate();
+            if (numberOfUpdatedRows > 0) {
+                System.out.println("Database updated");
+                return;
+            } else {
+                throw new SQLException("Update failed");
+            }
+        }
     }
 
     @Override
@@ -42,7 +52,19 @@ public class ActRepository extends Repository<Act> {
         if(item.getId() == null){
             throw new IllegalArgumentException("id must be provided");
         }
-        String sql = String.format("UPDATE %s SET name = %s, recordLabel = %d WHERE id = %d ", super.table, item.getName(), item.getRecordLabel(), item.getId());
-        super.simpleInsertWithExecuteUpdate(sql);
+        String sql = String.format("UPDATE %s SET name = ?, recordLabel = ? WHERE id = ? ", super.table);
+        try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, item.getName());
+            statement.setString(2, item.getRecordLabel());
+            statement.setInt(3, item.getId());
+
+            int numberOfUpdatedRows = statement.executeUpdate();
+            if (numberOfUpdatedRows > 0) {
+                System.out.println("Database updated");
+                return;
+            } else {
+                throw new SQLException("Update failed");
+            }
+        }
     }
 }

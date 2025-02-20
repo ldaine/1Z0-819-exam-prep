@@ -28,23 +28,17 @@ public abstract class Repository<T> {
     public abstract void update(T item) throws SQLException;
 
     public void deleteById(int id) throws SQLException {
-        String sql = String.format("DELETE FROM %s WHERE id=%d", this.table, id);
+        String sql = String.format("DELETE FROM %s WHERE id=?", this.table);
         try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
-            int numberOfUpdatedRows = statement.executeUpdate();
-            if (numberOfUpdatedRows == 0) {
+            statement.setInt(1, id);
+            // int numberOfUpdatedRows = statement.executeUpdate();
+            // execute() return only if the statement was executet or not 
+            // execute is used if you want to execute multiply queries at time. 
+            // to get number of lines: 
+            // int lines = statement.getUpdateCount();
+            boolean success = statement.execute();
+            if (success) {
                 System.out.println("Items deleted");
-            }
-        }
-    }
-
-    protected void simpleInsertWithExecuteUpdate(String sql) throws SQLException {
-        try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
-            int numberOfUpdatedRows = statement.executeUpdate();
-            if (numberOfUpdatedRows > 0) {
-                System.out.println("Database updated");
-                return;
-            } else {
-                throw new SQLException("Update failed");
             }
         }
     }

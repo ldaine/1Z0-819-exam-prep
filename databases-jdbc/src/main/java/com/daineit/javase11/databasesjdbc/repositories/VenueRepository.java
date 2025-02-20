@@ -33,8 +33,18 @@ public class VenueRepository extends Repository<Venue> {
 
     @Override
     public void add(Venue item) throws SQLException {
-        String sql = String.format("INSERT INTO %s (name, capacity) values (%s,%d) ", super.table, item.getName(), item.getCapacity());
-        super.simpleInsertWithExecuteUpdate(sql);
+        String sql = String.format("INSERT INTO %s (name, capacity) values (?,?) ", super.table);
+        try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, item.getName());
+            statement.setInt(2, item.getCapacity());
+            int numberOfUpdatedRows = statement.executeUpdate();
+            if (numberOfUpdatedRows > 0) {
+                System.out.println("Database updated");
+                return;
+            } else {
+                throw new SQLException("Update failed");
+            }
+        }
     }
 
     @Override
@@ -42,7 +52,18 @@ public class VenueRepository extends Repository<Venue> {
         if(item.getId() == null){
             throw new IllegalArgumentException("id must be provided");
         }
-        String sql = String.format("UPDATE %s SET name = %s, capacity = %d WHERE id = %d ", super.table, item.getName(), item.getCapacity(), item.getId());
-        super.simpleInsertWithExecuteUpdate(sql);
+        String sql = String.format("UPDATE %s SET name = ?, capacity = ? WHERE id = ?", super.table, item.getId());
+        try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, item.getName());
+            statement.setInt(2, item.getCapacity());
+            statement.setInt(3, item.getId());
+            int numberOfUpdatedRows = statement.executeUpdate();
+            if (numberOfUpdatedRows > 0) {
+                System.out.println("Database updated");
+                return;
+            } else {
+                throw new SQLException("Update failed");
+            }
+        }
     }
 }
