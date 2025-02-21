@@ -36,41 +36,15 @@ $CREATED_RESOURCES = az deployment group create --resource-group $RESOURCEGROUP 
 # convert to object for easy use
 $CREATED_RESOURCES_CONVERTED = ConvertFrom-Json -InputObject "$CREATED_RESOURCES"
 
-$PG_SERVER_HOST = $CREATED_RESOURCES_CONVERTED.properties.outputs.serverFqdn.value
-$DB_NAME = $CREATED_RESOURCES_CONVERTED.properties.outputs.databaseName.value
-# $PG_SERVER_NAME = $CREATED_RESOURCES_CONVERTED.properties.outputs.serverName.value
+# hostname
+$CREATED_RESOURCES_CONVERTED.properties.outputs.serverFqdn.value
 # $PG_SERVER_HOST = az postgres flexible-server show --resource-group $RESOURCEGROUP --name $PG_SERVER_NAME  --query fullyQualifiedDomainName  --output tsv
 
-#-----------------------------------------------------------------------
-# Connecting to Azure PostgreSQL database locally
-#-----------------------------------------------------------------------
+# dtabase name
+$CREATED_RESOURCES_CONVERTED.properties.outputs.databaseName.value
 
-# Download PostgeSQL installer from https://www.postgresql.org/download/
-# Run the intaller and schoose to install 'Command Line Tools'. Finish installation. 
-
-# Open new PS window
-# Go to PostgreSQL bin folder. (the path is set during installation)
-cd 'C:\Program Files\PostgreSQL\17\bin'
-
-# Connect to to Postge SQL DB
-./psql.exe --host=$PG_SERVER_HOST  --port=5432 --username=$PG_ADMIN_USERNAME --dbname=$DB_NAME --set=sslmode=require
-
-#-----------------------------------------------------------------------
-# Populate the database with sample data (TEST purposes only)
-#-----------------------------------------------------------------------
-
-# create listings table:
-DROP TABLE IF EXISTS users;
-    
-CREATE TABLE users (
-    id int,
-    first_name varchar(100),
-    last_name varchar(100),
-    gender varchar(25)
-);
-
-\COPY users FROM <my-repo-path>/databases-jdbc/infrastructure/users.csv CSV HEADER;
-
+# server name
+# $PG_SERVER_NAME = $CREATED_RESOURCES_CONVERTED.properties.outputs.serverName.value
  
 #**********************************************************
 # CLEANUP
