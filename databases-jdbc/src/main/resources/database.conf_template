@@ -1,4 +1,4 @@
-flyway.user=pgAdmin
-flyway.password=<psw>
-flyway.host=<server-host>
+db.user=pgAdmin
+db.password=<psw>
+db.host=<server-host>
 db.name=<db name>
