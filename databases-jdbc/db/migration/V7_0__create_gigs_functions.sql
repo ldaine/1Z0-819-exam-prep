@@ -34,9 +34,3 @@ BEGIN
     RETURN sales;
 END;
 $$ LANGUAGE plpgsql;
-
-CREATE VIEW total_sales AS
-    SELECT sum(currentvalue) as sales FROM
-        (SELECT ticketsSold, price, ticketsSold*price AS currentvalue
-         FROM gigs) salestable;
-

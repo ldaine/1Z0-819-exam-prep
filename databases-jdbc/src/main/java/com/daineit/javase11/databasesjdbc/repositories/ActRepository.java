@@ -1,5 +1,6 @@
 package com.daineit.javase11.databasesjdbc.repositories;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +17,7 @@ public class ActRepository extends Repository<Act> {
         super("acts");
     }
 
+    @Override
     public List<Act> getAll() throws SQLException {
         List<Act> result = new ArrayList<>();
         String sql = "SELECT id, name, recordLabel FROM " + this.table;
@@ -37,7 +39,7 @@ public class ActRepository extends Repository<Act> {
         String sql = String.format("INSERT INTO %s (name, recordLabel) values (?,?) ", super.table);
         try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, item.getName());
-            if(item.getRecordLabel() != null){
+            if (item.getRecordLabel() != null) {
                 statement.setString(2, item.getRecordLabel());
             } else {
                 statement.setNull(2, Types.CHAR);
@@ -54,13 +56,13 @@ public class ActRepository extends Repository<Act> {
 
     @Override
     public void update(Act item) throws SQLException {
-        if(item.getId() == null){
+        if (item.getId() == null) {
             throw new IllegalArgumentException("id must be provided");
         }
         String sql = String.format("UPDATE %s SET name = ?, recordLabel = ? WHERE id = ? ", super.table);
         try (Connection conn = this.getDbConnection(); PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setString(1, item.getName());
-            if(item.getRecordLabel() != null){
+            if (item.getRecordLabel() != null) {
                 statement.setString(2, item.getRecordLabel());
             } else {
                 statement.setNull(2, Types.CHAR);
@@ -75,5 +77,20 @@ public class ActRepository extends Repository<Act> {
                 throw new SQLException("Update failed");
             }
         }
+    }
+
+    public List<String> getActsWithRecordLabels() throws SQLException {
+        List<String> result = new ArrayList<>();
+        String sql = "{call get_acts()}";
+        try (Connection conn = super.getDbConnection(); CallableStatement statement = conn.prepareCall(sql)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String recordlabel = rs.getString("recordLabel");
+                result.add(String.format("%s - %s", name, recordlabel));
+            }
+        }
+
+        return result;
     }
 }

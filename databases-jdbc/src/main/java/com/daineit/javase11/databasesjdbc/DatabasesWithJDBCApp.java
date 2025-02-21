@@ -3,6 +3,7 @@ package com.daineit.javase11.databasesjdbc;
 import java.util.Scanner;
 
 import com.daineit.javase11.databasesjdbc.services.ActService;
+import com.daineit.javase11.databasesjdbc.services.GigService;
 import com.daineit.javase11.databasesjdbc.services.VenueService;
 
 public class DatabasesWithJDBCApp {
@@ -11,6 +12,7 @@ public class DatabasesWithJDBCApp {
         try (Scanner scanner = new Scanner(System.in)) {
             ActService actService = new ActService();
             VenueService venueService = new VenueService();
+            GigService gigService = new GigService();
 
             int input;
             listCommands();
@@ -39,6 +41,18 @@ public class DatabasesWithJDBCApp {
                         case ALL_ACTS:
                             System.out.println(InputCommands.ALL_ACTS.getDescription());
                             actService.printAll();
+                            break;
+                        case ACTS_WITH_LABELS:
+                            System.out.println(InputCommands.ACTS_WITH_LABELS.getDescription());
+                            actService.printActsWithRecordLabels();
+                            break;
+                        case GIG_REPORT:
+                            System.out.println(InputCommands.GIG_REPORT.getDescription());
+                            gigService.printGigReport();
+                            break;
+                        case TOTAL_SALES:
+                            System.out.println(InputCommands.TOTAL_SALES.getDescription());
+                            gigService.printTotalSales();
                             break;
                         case ADD_ACT:
                             System.out.println(InputCommands.ADD_ACT.getDescription());

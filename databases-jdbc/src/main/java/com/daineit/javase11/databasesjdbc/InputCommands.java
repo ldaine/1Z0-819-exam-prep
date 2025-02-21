@@ -8,7 +8,10 @@ public enum InputCommands {
     ALL_VENUES(4, "Get all venues"),
     ADD_VENUE(5, "Add venue"),
     DELETE_ACT(6, "Delete act"),
-    DELETE_VENUE(7, "Delete venue");
+    DELETE_VENUE(7, "Delete venue"),
+    ACTS_WITH_LABELS(8, "Get acts with record labels"),
+    GIG_REPORT(9, "Pring Gig Report"),
+    TOTAL_SALES(10, "Pring total sales");
 
     private int value;
     private String description;

@@ -25,6 +25,18 @@ public class ActService {
         }
     }
 
+    public void printActsWithRecordLabels() {
+        try {
+            List<String> result = this.repository.getActsWithRecordLabels();
+            for (String line : result) {
+                System.out.println(line);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public void add(String name, String recordLabel) throws IllegalArgumentException {
         if(name == null || name.isEmpty()){
             throw new IllegalArgumentException("act name is required");

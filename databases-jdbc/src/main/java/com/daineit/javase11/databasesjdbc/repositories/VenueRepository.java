@@ -15,6 +15,7 @@ public class VenueRepository extends Repository<Venue> {
         super("venues");
     }
 
+    @Override
     public List<Venue> getAll() throws SQLException {
         List<Venue> result = new ArrayList<>();
         String sql = "SELECT id, name, capacity FROM " + super.table;
