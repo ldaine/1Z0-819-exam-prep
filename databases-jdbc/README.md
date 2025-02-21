@@ -2,23 +2,31 @@
 
 # Infrastructure
 
-we are using Postgre DB in Azure. How to set it up, see infrastructure folder. 
+The application uses Postgre DB. How to set up a database in Azure, see infrastructure folder. 
 
 ## Configuration
 
-Whn you knwo the database configuration details, create following files based on corresponding templates: 
+When you know the database configuration details, create following files in `src/main/resources`: 
 * flyway.conf - for flyway migrations
-* database.properties - for application to be able access DB
+* database.conf - for application to be able access DB
+
+Templates can be found in the same folder. 
 
 ## Migrations
 
-For DB migrations we are using Flyway. 
+For DB migrations Flyway is used. 
 
 To run the migration use: 
 
 > mvn clean flyway:migrate `-Dflyway.configFiles=./src/main/resources/flyway.conf
 
 Make sure the `flyway.conf` exists and is up to date. 
+
+Fix the flyway migration: 
+> mvn flyway:repair `-Dflyway.configFiles=./src/main/resources/flyway.conf
+
+See the flyway migration table: 
+> mvn flyway:info `-Dflyway.configFiles=./src/main/resources/flyway.conf
 
 # PSQL commnds
 
