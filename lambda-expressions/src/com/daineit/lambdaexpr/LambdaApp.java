@@ -11,10 +11,12 @@ import com.daineit.lambdaexpr.models.CourseCategory;
 
 public class LambdaApp {
 
+    @FunctionalInterface // not required, will throw error if you try adding more than one funcion to interface.
     interface CourseFilter {
         boolean accept(Course course);
     }
 
+    @FunctionalInterface
     interface CourseFactory {
         Course create(CourseCategory category, String title, BigDecimal price, Integer durationInHours);
     }

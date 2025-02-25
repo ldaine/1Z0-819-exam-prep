@@ -1,4 +1,4 @@
-package com.ldaine.greet.hello.service;
+package com.ldaine.hellogreeter.service;
 
 public class HelloMessageService {
     public void sayHello(){
