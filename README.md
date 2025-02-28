@@ -1,6 +1,6 @@
 # ABOUT
 
-Example snippets for java topics. 
+Example snippets for java topics. The example are based on Pluralsight 1Z0-819 exam preperation path courses. 
 
 ## External libraries
 
